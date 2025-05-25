@@ -31,7 +31,7 @@
 
 ```ini
 ZRAM_ALGO=lz4kd       # 算法名
-ZRAM_SIZE=17179869184 # ZRAM字节数
+ZRAM_SIZE=12884901888 # ZRAM字节数
 ```
 
 - `ZRAM_ALGO`：指定使用的压缩算法名称（必须与你的 `.ko` 文件一致）  
