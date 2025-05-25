@@ -70,5 +70,5 @@ ZRAM_SIZE=12884901888 # ZRAM字节数
 ## 作者
 
 - [ShirkNeko](https://github.com/ShirkNeko)
-- [xiaoxiaow](https://github.com/xiaoxiaow)
-- [冷川](https://github.com/FurLC)
+- [xiaoxiaow](https://github.com/Xiaomichael)
+- [FurLC](https://github.com/FurLC)
