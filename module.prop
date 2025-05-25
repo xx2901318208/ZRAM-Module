@@ -3,5 +3,5 @@ name=zramの附加模块
 version=v1.0
 versionCode=100
 author=ShirkNeko & xiaoxiaow & 冷川
-description=为手机内核提供ZRAM内核算法支持，请勿卸载
+description=为内核提供ZRAM算法支持，请勿卸载
 minMagisk=10000
