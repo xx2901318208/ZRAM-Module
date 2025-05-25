@@ -1,0 +1,7 @@
+id=zram
+name=zramの附加模块
+version=v1.0
+versionCode=100
+author=ShirkNeko & xiaoxiaow & 冷川
+description=为一加系内核提供lz4kd支持，请勿卸载
+minMagisk=10000
