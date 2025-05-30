@@ -1,4 +1,5 @@
-MODPATH=$MODPATH
+MODDIR=${0%/*}
+TMPDIR=$MODDIR
 ZRAM_DIR="$MODPATH/zram"
 
 ui_print ">> 检查 zram 文件夹是否存在..."
