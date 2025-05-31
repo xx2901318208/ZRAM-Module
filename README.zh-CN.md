@@ -1,6 +1,6 @@
 # ZRAM-Module
 
-[English README](README.md)
+[English](README.md)
 
 ## 📦 简介
 
