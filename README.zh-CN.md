@@ -1,8 +1,10 @@
 # ZRAM-Module
 
+[English README](README.md)
+
 ## 📦 简介
 
-`ZRAM-Module` 是一个基于 Magisk 的模块，用于为 Android 设备内核添加自定义 ZRAM 压缩算法支持（如 `lz4kd`, `zstdn` 等）。适用于已经自行编译支持的内核环境，能够帮助用户在刷入后自动配置 ZRAM 参数。
+`ZRAM-Module` 是一个基于 Magisk/KernelSU 的模块，用于为 Android 设备内核添加自定义 ZRAM 压缩算法支持（如 `lz4kd`, `zstdn` 等）。适用于已经自行编译支持的内核环境，能够帮助用户在刷入后自动配置 ZRAM 参数。
 
 ---
 
@@ -11,7 +13,7 @@
 - 支持自定义压缩算法（如 `lz4kd`）
 - 支持自定义 ZRAM 大小（单位：Byte）
 - 支持开机自动加载内核模块
-- 完全通过 `Magisk` 实现，无需修改系统分区
+- 完全通过 `Magisk/KernelSU` 实现，无需修改系统分区
 
 ---
 
