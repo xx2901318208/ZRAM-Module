@@ -20,8 +20,8 @@ echo 8 > /sys/block/zram0/max_comp_streams
 echo "$ZRAM_ALGO" > /sys/block/zram0/comp_algorithm
 echo "$ZRAM_SIZE" > /sys/block/zram0/disksize
 
-echo "创建 swap 并启用..."
+echo "创建 zram 并启用..."
 mkswap /dev/block/zram0
 swapon /dev/block/zram0
 
-echo "[SuKisu] ZRAM 热重载完成。"
+echo "ZRAM 热重载完成。"
