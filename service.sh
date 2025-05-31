@@ -1,5 +1,3 @@
-#!/system/bin/sh
-
 MODDIR=${0%/*}
 CONFIG_FILE="$MODDIR/config.prop"
 
