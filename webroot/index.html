@@ -1,28 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>FurLC ZRAM Viewer</title>
-  <style>
-    body { font-family: monospace; background: #111; color: #0f0; padding: 20px; }
-    h1 { color: #0ff; }
-    pre { background: #222; padding: 10px; border-left: 5px solid #0ff; }
-    button { padding: 10px; background: #0ff; color: #000; border: none; margin-top: 10px; cursor: pointer; }
-  </style>
+  <title>ZRAM 状态监控 - FurLC</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🐾 FurLC ZRAM 状态</h1>
-  <button onclick="loadStatus()">刷新</button>
-  <pre id="output">正在加载中...</pre>
+  <h1>ZRAM 状态监控</h1>
 
-  <script>
-    function loadStatus() {
-      fetch('/web/api.sh')
-        .then(res => res.text())
-        .then(text => { document.getElementById('output').innerText = text; })
-        .catch(err => { document.getElementById('output').innerText = '加载失败：' + err; });
-    }
-    loadStatus(); // 初次加载
-  </script>
+  <div id="zram-status">
+    <p><strong>压缩算法：</strong><span id="algo">加载中...</span></p>
+    <p><strong>总空间：</strong><span id="size">加载中...</span></p>
+    <p><strong>已用内存：</strong><span id="used">加载中...</span></p>
+    <p><strong>压缩率：</strong><span id="ratio">加载中...</span></p>
+  </div>
+
+  <button onclick="refreshZram()">刷新状态</button>
+
+  <footer>
+    <p>FurLC / ZRAM-Module | Powered by KernelSU WebUI</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
