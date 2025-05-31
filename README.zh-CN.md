@@ -1,77 +1,106 @@
 # ZRAM-Module
 
-[English](README.md)
-[中文](README.zh-CN.md)
+[English](README.md) | [中文](README.zh-CN.md)
 
-## 📦 简介
+## 📦 模块简介
 
-`ZRAM-Module` 是一个基于 Magisk/KernelSU 的模块，用于为 Android 设备内核添加自定义 ZRAM 压缩算法支持（如 `lz4kd`, `zstdn` 等）。适用于已经自行编译支持的内核环境，能够帮助用户在刷入后自动配置 ZRAM 参数。
+`ZRAM-Module` 是一个基于 **Magisk / KernelSU** 的模块，适用于已支持 ZRAM 的 Android 内核。它可以自动加载用户自定义的压缩算法模块（如 `lz4kd`、`zstdn` 等），并配置 ZRAM 空间大小。
 
----
-
-## ⚙️ 特性
-
-- 支持自定义压缩算法（如 `lz4kd`）
-- 支持自定义 ZRAM 大小（单位：Byte）
-- 支持开机自动加载内核模块
-- 完全通过 `Magisk/KernelSU` 实现，无需修改系统分区
+适用于自定义内核用户，无需修改系统分区，即可实现内核模块加载和自动初始化。
 
 ---
 
-## 🚀 使用方式
+## ⚙️ 模块特性
 
-### 步骤一：准备你的内核模块
-
-1. **自行编译内核源码**
-2. 编译出你所需的压缩算法内核模块（如 `crypto_zstdn.ko` 或其他）
-3. 将其重命名为 `zram.ko` 并覆盖 `zram/` 目录下的 `zram.ko`
+- ✅ 支持加载自定义压缩算法（例如 `lz4kd`, `zstdn`）
+- ✅ 支持自定义 ZRAM 大小（单位：字节）
+- ✅ 支持开机自动加载 `.ko` 模块
+- ✅ 完全基于 Magisk / KernelSU 实现，无需更改系统分区
 
 ---
 
-### 步骤二：配置压缩算法与容量
+## 🚀 使用指南
 
-在模块根目录下编辑 `config.prop` 文件，修改如下内容：
+### 第一步：准备内核模块
 
-```ini
-ZRAM_ALGO=lz4kd       # 算法名
-ZRAM_SIZE=12884901888 # ZRAM字节数
+1. 编译你设备对应的内核源码  
+2. 编译所需的压缩算法模块（例如：`crypto_zstdn.ko`）
+3. 将模块重命名为 `zram.ko`，并放入本模块目录的 `zram/` 子目录中
+
+```bash
+# 示例路径结构
+ZRAM-Module/
+├── config.prop
+└── zram/
+    └── zram.ko  # 重命名后的模块
 ```
 
-- `ZRAM_ALGO`：指定使用的压缩算法名称（必须与你的 `.ko` 文件一致）  
-- `ZRAM_SIZE`：ZRAM 空间大小（单位为字节）
+---
 
-⚠️ 未配置 `config.prop` 将导致模块初始化失败。
+### 第二步：编辑配置文件
+
+修改模块根目录下的 `config.prop` 文件：
+
+```ini
+ZRAM_ALGO=lz4kd         # 使用的压缩算法名称（对应内核模块）
+ZRAM_SIZE=12884901888   # ZRAM 大小，单位：字节（12GB）
+```
+
+📌 **注意：**
+
+- `ZRAM_ALGO` 必须与模块实现的算法名称一致
+- `ZRAM_SIZE` 建议不超过设备实际内存容量
+
+若未配置 `config.prop`，模块将无法正常初始化。
 
 ---
 
-### 步骤三：打包并刷入模块
+### 第三步：打包并刷入模块
 
-1. 将整个模块目录打包成 ZIP 文件  
-2. 使用 Magisk App 或 TWRP 刷入 ZIP 文件：
-`Magisk → 模块 → 安装模块 → 选择 ZIP`
-3. 重启设备后，模块会自动生效并配置 ZRAM
+1. 将整个模块目录压缩为 ZIP 文件  
+2. 使用 **Magisk/KernelSU** 或 **TWRP** 刷入模块 ZIP：
 
----
+```text
+Magisk/KernelSU → 模块 → 安装模块 → 选择 ZIP 文件
+```
 
-## 常见问题
-
-**Q: 支持哪些压缩算法？**  
-取决于你自行编译并放入的内核模块，常见如 `lz4kd`、`zstdn`、`lzo-rle` 等。
-
-**Q: ZRAM_SIZE 的单位是什么？**  
-单位是字节（Byte），例如 `12884901888` 表示 12 GB。  
-⚠️ **`ZRAM_SIZE` 最好不要大于设备物理内存，否则可能导致意外错误。**
-
-**Q: 内核是否必须开启 ZRAM？**  
-请确保关闭系统设置（如 Scene 等应用）中的 ZRAM 功能，否则模块无法正常工作。
-
-**Q: 如果配置错误会怎样？**  
-模块启动时会失败，ZRAM 不会被正确初始化。
+3. 重启设备，模块将自动加载并初始化 ZRAM 配置
 
 ---
 
-## 作者
+## ❓ 常见问题解答
 
-- [ShirkNeko](https://github.com/ShirkNeko)
-- [xiaoxiaow](https://github.com/Xiaomichael)
-- [FurLC](https://github.com/FurLC)
+### Q: 模块支持哪些压缩算法？
+A: 支持任何你已自行编译的压缩算法模块，例如：
+
+- `lz4kd`
+- `zstdn`
+- `lzo-rle`  
+
+前提是对应的 `.ko` 文件已正确放入 `zram/` 目录。
+
+---
+
+### Q: `ZRAM_SIZE` 的单位是什么？
+A: 单位是 **字节（Byte）**，例如：
+
+```ini
+ZRAM_SIZE=8589934592  # 表示 8 GB
+ZRAM_SIZE=12884901888  # 表示 12 GB
+ZRAM_SIZE=17179869184  # 表示 16 GB
+```
+
+⚠️ 不建议设置超过设备物理内存的容量，可能导致系统异常。
+
+---
+
+### Q: 是否必须在内核中启用 ZRAM？
+A: 是的。请确保：
+
+- 你的内核已启用 ZRAM 支持
+- 关闭系统设置中其他 ZRAM 管理功能（如 Scene 等工具）
+
+---
+
+### Q: 如果配置错误会发生什么？
+A: 模块启动将失败，ZRAM 设备不会被正确创建。你可以检查日志（`./ZRAM-Module/zram_module.log`）来诊断问题。
