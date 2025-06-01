@@ -1,6 +1,6 @@
 MODDIR=${0%/*}
 
-# 清理 zram1, zram2 等除 zram0 以外的 zram 实例
+# 清理除 zram0 以外的所有 zram 实例
 for zdev in /dev/block/zram*; do
   zname=$(basename "$zdev")
   if [ "$zname" != "zram0" ]; then
