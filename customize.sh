@@ -20,7 +20,7 @@ ui_print ">> 检查已安装模块的 ZRAM 文件夹是否存在..."
 if [ -d "$OLD_ZRAM_DIR" ]; then
   ui_print ">> 已检测到旧模块 ZRAM 文件夹，复制保留文件中..."
   mkdir -p "$ZRAM_DIR"
-  cp -af "$OLD_ZRAM_DIR/." "$ZRAM_DIR/" 2>/dev/null
+  cp -af "$OLD_ZRAM_DIR/." "$ZRAM_DIR/"
   ui_print ">> 文件复制完成 ✅"
 else
   ui_print ">> 未检测到旧模块 ZRAM 文件夹，跳过复制"
