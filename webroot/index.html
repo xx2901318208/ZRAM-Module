@@ -3,20 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <title>ZRAM 状态监控 - FurLC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>ZRAM 状态监控</h1>
-  <div id="zram-status">
-    <p><strong>压缩算法：</strong><span id="algo">加载中...</span></p>
-    <p><strong>总空间：</strong><span id="size">加载中...</span></p>
-    <p><strong>已用内存：</strong><span id="used">加载中...</span></p>
-    <p><strong>压缩率：</strong><span id="ratio">加载中...</span></p>
+  <div class="container">
+    <h1>🧊 ZRAM 状态监控</h1>
+    <div id="zram-status" class="card">
+      <p><strong>压缩算法：</strong><span id="algo" class="skeleton">加载中...</span></p>
+      <p><strong>总空间：</strong><span id="size" class="skeleton">加载中...</span></p>
+      <p><strong>已用内存：</strong><span id="used" class="skeleton">加载中...</span></p>
+      <p><strong>压缩率：</strong><span id="ratio" class="skeleton">加载中...</span></p>
+    </div>
+    <button id="refresh-btn" onclick="refreshZram()">🔄 刷新状态</button>
+    <footer>
+      <p>FurLC / ZRAM-Module | Powered by <a href="https://github.com/KernelSU/KernelSU" target="_blank">KernelSU WebUI</a></p>
+    </footer>
   </div>
-  <button onclick="refreshZram()">刷新状态</button>
-  <footer>
-    <p>FurLC / ZRAM-Module | Powered by KernelSU WebUI</p>
-  </footer>
   <script src="script.js"></script>
 </body>
 </html>
