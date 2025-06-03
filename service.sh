@@ -1,4 +1,3 @@
-#!/system/bin/sh
 MODDIR=${0%/*}
 LOG_FILE="$MODDIR/zram_module.log"
 CONFIG_FILE="$MODDIR/config.prop"
