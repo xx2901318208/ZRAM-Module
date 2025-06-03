@@ -2,12 +2,18 @@
 MODDIR=${0%/*}
 LOG_FILE="$MODDIR/zram_module.log"
 CONFIG_FILE="$MODDIR/config.prop"
-
-[ -d "$MODDIR" ] || mkdir -p "$MODDIR"
 TEE=/system/bin/tee
 [ -x "$TEE" ] || TEE=tee
 
-# 读取配置文件
+log() {
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | $TEE -a "$LOG_FILE"
+}
+
+log "======================================="
+log "====== 服务启动：$(date '+%Y-%m-%d %H:%M:%S') ======"
+log "======================================="
+
+# ---------- 读取配置 ----------
 if [ -f "$CONFIG_FILE" ]; then
     . "$CONFIG_FILE"
 else
@@ -15,37 +21,27 @@ else
     ZRAM_SIZE="8589934592"
 fi
 
-log() {
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | $TEE -a "$LOG_FILE"
-}
-
-# 日志分割线
-log "======================================="
-log "====== 开机或服务启动：$(date '+%Y-%m-%d %H:%M:%S') ======"
-log "======================================="
-
-log "[TEST] 日志功能启动"
 log "读取配置: ZRAM_ALGO=$ZRAM_ALGO, ZRAM_SIZE=$ZRAM_SIZE"
 log "=== ZRAM-Module 服务启动 ==="
 log "等待系统初始化完成..."
 sleep 30
 
 log "加载zstdn.ko..."
-if su -c insmod $MODDIR/zram/zstdn.ko 2>>"$LOG_FILE"; then
+if insmod $MODDIR/zram/zstdn.ko 2>>"$LOG_FILE"; then
   log "zstdn.ko 加载成功"
 else
   log "zstdn.ko 加载失败"
 fi
 
 log "swapoff /dev/block/zram0"
-if su -c swapoff /dev/block/zram0 2>>"$LOG_FILE"; then
+if swapoff /dev/block/zram0 2>>"$LOG_FILE"; then
   log "swapoff 成功"
 else
   log "swapoff 失败或无效"
 fi
 
 log "rmmod zram"
-if su -c rmmod zram 2>>"$LOG_FILE"; then
+if rmmod zram 2>>"$LOG_FILE"; then
   log "rmmod zram 成功"
 else
   log "rmmod zram 失败或为内建"
@@ -55,7 +51,7 @@ log "等待5秒..."
 sleep 5
 
 log "insmod zram.ko"
-if su -c insmod $MODDIR/zram/zram.ko 2>>"$LOG_FILE"; then
+if insmod $MODDIR/zram/zram.ko 2>>"$LOG_FILE"; then
   log "zram.ko 加载成功"
 else
   log "zram.ko 加载失败"
@@ -113,7 +109,26 @@ else
   log "swapon 失败"
 fi
 
-# 优化内存信息日志格式
+# ------------- 重点优化：最后再清理多余zram设备 -------------
+log "=== 最后清理多余zram设备（zram1/zram2…） ==="
+for zdev in /dev/block/zram*; do
+  [ "$zdev" = "/dev/block/zram0" ] && continue
+  [ -b "$zdev" ] || continue
+  log "处理 $zdev ..."
+  i=0
+  while grep -qw "$zdev" /proc/swaps && [ $i -lt 5 ]; do
+    log "swapoff $zdev (第$((i+1))次)"
+    swapoff "$zdev"
+    sleep 1
+    i=$((i+1))
+  done
+  zname=$(basename "$zdev")
+  [ -e "/sys/block/$zname/reset" ] && echo 1 > "/sys/block/$zname/reset" && log "reset $zname"
+  [ -e "/sys/block/$zname/hot_remove" ] && echo 1 > "/sys/block/$zname/hot_remove" && log "hot_remove $zname"
+done
+log "多余zram设备清理完成"
+
+# --------- ZRAM与内存状态日志 ---------
 log "--------- ZRAM与内存状态 ---------"
 log "zram0 当前支持算法: $(cat /sys/block/zram0/comp_algorithm 2>/dev/null)"
 
