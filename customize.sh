@@ -7,12 +7,7 @@ ZRAM_DIR="$MODPATH/zram"
 OLD_ZRAM_DIR="$OLD_MODPATH/zram"
 
 ui_print "-------------"
-ui_print "  _____           _     ____ "
-ui_print " |  ___|   _ _ __| |   / ___|"
-ui_print " | |_ | | | | '__| |  | |    "
-ui_print " |  _|| |_| | |  | |__| |___ "
-ui_print " |_|   \__,_|_|  |_____\____|"
-ui_print "      FurLC ZRAM Module      "
+ui_print " 正在安装 ZRAM Module      "
 ui_print "-------------"
 
 ui_print ">> 检查已安装模块的 zram 文件夹是否存在..."
